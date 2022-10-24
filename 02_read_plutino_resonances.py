@@ -279,9 +279,11 @@ res_i = []
 res_w = []
 res_W = []
 res_M = []
+false_negative_list = ['K04K19H'] # objects that look resonant in 3:2 but are tagged False
+false_positive_list = ['K14Se4J'] # objects that don't look resonant in 3:2 but are tagged True
 for iobj in range(Nobj):
     des = df['packed_designation'][iobj]
-    if des == 'K04K19H': # this object looks resonant but is tagged False, add it in
+    if des in false_negative_list:
         resdes.append(des)
         res_a.append(df['a_au'][iobj])
         res_e.append(df['e'][iobj])
@@ -289,7 +291,7 @@ for iobj in range(Nobj):
         res_w.append(df['w_deg'][iobj])
         res_W.append(df['W_deg'][iobj])
         res_M.append(df['M_deg'][iobj])
-    elif des != 'K14Se4J': # this object doesn't look resonant but is tagged True, exclude it
+    elif des not in false_positive_list:
         for i in os.listdir(path):
             if os.path.isfile(os.path.join(path,i)) and ('long_True_plutino ' + des) in i:
                 resdes.append(des)
